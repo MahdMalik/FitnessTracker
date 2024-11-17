@@ -1,40 +1,40 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Box, Stack, TextField, Button, Typography } from "@mui/material";
-
-export default function Home() {
+import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Box, Stack, TextField, Button, Typography } from '@mui/material';
+import marked from 'marked';
+export default function FitBot() {
   const [messages, setMessages] = useState(() => {
     // Load messages from localStorage, or start with the default welcome message
-    const savedMessages = localStorage.getItem("fitbotai-messages");
-    return savedMessages
-      ? JSON.parse(savedMessages)
-      : [
-          {
-            role: "model",
-            parts: [
-              { text: "Hello! I'm the FitBot. How can I help you today?" },
-            ],
-          },
-        ];
+    const savedMessages = localStorage.getItem('fitbotai-messages');
+    return savedMessages ? JSON.parse(savedMessages) : [
+      {
+        role: 'model',
+        content: "Hello! I'm the FitBot. How can I help you today?"
+      }
+    ];
   });
 
-  const [message, setMessage] = useState("");
-
+  const [message, setMessage] = useState('');
+  const MAX_HISTORY_LENGTH=10;
   // Save messages to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("fitbotai-messages", JSON.stringify(messages));
   }, [messages]);
-
+  
+  const trimHistory = (history) => {
+    if (history.length > MAX_HISTORY_LENGTH) {
+      return history.slice(-MAX_HISTORY_LENGTH); // Keep only the last N messages
+    }
+    return history;
+  }
   const sendMessage = async () => {
     if (!message.trim()) return; // won't send empty messages
     setMessage("");
     try {
-      const response = await fetch("http://localhost:4000/api/chatbot/chat", {
+      const response = await fetch('http://localhost:4000/api/chatbot/chat', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([
-          ...messages,
-          { role: "user", parts: [{ text: message }] },
-        ]),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(trimHistory([...messages, { role: "user", content: message}]))
       });
 
       let newMessage = await response.json();
@@ -43,22 +43,19 @@ export default function Home() {
         newMessage = newMessage.text || JSON.stringify(newMessage);
       }
 
-      newMessage = newMessage.replace(/\*/g, "").replace(/\n/g);
+      // newMessage = newMessage.replace(/\*/g, '').replace(/\n/g);
 
       setMessages((messages) => [
         ...messages,
-        { role: "user", parts: [{ text: message }] },
-        { role: "model", parts: [{ text: newMessage }] },
+        { role: "user", content: message},
+        { role: "model", content: newMessage},
       ]);
     } catch (e) {
       console.error("Error sending message:", e);
       setMessages((messages) => [
         ...messages,
-        { role: "user", parts: [{ text: message }] },
-        {
-          role: "model",
-          parts: [{ text: `Sorry, I encountered an error: ${e.message}` }],
-        },
+        { role: "user", content : message},
+        { role: "model", content : `Sorry, I encountered an error: ${e.message}`},
       ]);
     }
   };
@@ -127,7 +124,7 @@ export default function Home() {
                 borderRadius={16}
                 p={3}
               >
-                {theMessage.parts[0].text}
+                <ReactMarkdown>{theMessage.content}</ReactMarkdown>
               </Box>
             </Box>
           ))}
