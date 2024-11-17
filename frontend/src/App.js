@@ -8,6 +8,7 @@ import Signup from './Pages/Signup'
 import Navbar from './components/Navbar'
 import FitBot from './Pages/FitBot'; 
 import Home from './Pages/Home'
+import DietFeed from './components/DietFeed'
 function App() {
   const { user } = useAuthContext()
 
@@ -30,6 +31,7 @@ function App() {
               element={!user ? <Signup /> : <Navigate to="/" />} 
             />
              <Route path="/chat" element={user ? <FitBot /> : <Navigate to="/login" />} />
+             <Route path="/diet" element={user ? <DietFeed /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </BrowserRouter>

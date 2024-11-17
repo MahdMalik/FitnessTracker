@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
 const chatRoutes = require('./routes/chat')
+const dietRoutes = require('./routes/diet')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use('/api/workouts', workoutRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/chatbot', chatRoutes)
+app.use('/api/diet', dietRoutes)
 
 // Connect to DB and set up a basic route
 mongoose.connect(process.env.MONGO_URI)
@@ -32,7 +34,7 @@ mongoose.connect(process.env.MONGO_URI)
     app.get('/', (req, res) => {
       res.send(`
         <html>
-          <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+          <body style="font-family: Poppins, sans-serif; text-align: center; margin-top: 50px;">
             <h1 style="color: green;">Server Connected Successfully</h1>
             <p>The server is running on port ${process.env.PORT}.</p>
           </body>
@@ -51,7 +53,7 @@ mongoose.connect(process.env.MONGO_URI)
     app.get('/', (req, res) => {
       res.send(`
         <html>
-          <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+          <body style="font-family: Poppins, sans-serif; text-align: center; margin-top: 50px;">
             <h1 style="color: red;">Server Connection Failed</h1>
             <p>Failed to connect to MongoDB: ${error.message}</p>
           </body>
