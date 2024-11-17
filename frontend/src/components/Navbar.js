@@ -19,7 +19,9 @@ const Navbar = () => {
         <nav>
           {user && (
             <div>
-              <Link to="/chat">Chat with FitBot</Link>
+              <Link to="/diet">Health Feed</Link>
+              <Link to="/">Workouts</Link>
+              <Link to="/chat">Chat with FitBot  </Link>
               <span>{user.email}</span>
               <button onClick={handleClick}>Log out</button>
             </div>
