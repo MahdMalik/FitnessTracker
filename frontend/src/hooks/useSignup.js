@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
+
 export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
@@ -16,13 +17,14 @@ export const useSignup = () => {
       body: JSON.stringify({ email, password }),
     });
     const json = await response.json();
-
+    console.log(json);
     if (!response.ok) {
       setIsLoading(false);
       setError(json.error);
     }
     if (response.ok) {
       // save the user to local storage
+
       localStorage.setItem("user", JSON.stringify(json));
 
       // update the auth context
