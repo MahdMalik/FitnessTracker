@@ -1,6 +1,7 @@
 const express = require('express'); // Import Express.js for handling HTTP requests
 const OpenAI = require('openai'); // Import OpenAI library for interacting with the OpenAI API
 const { GenerativeModel, GoogleGenerativeAI } = require('@google/generative-ai'); // Import Google Generative AI SDK for interacting with Google's models
+const API_URL = 'https://api.sambanova.ai/v1/completions';
 // System prompt for the AI, providing guidelines on how to respond to users
 const systemPrompt = `You are FitBot, an advanced AI fitness assistant dedicated to helping users achieve their health and fitness goals. Your primary mission is to provide personalized fitness advice, create tailored workout routines, design effective diet plans, and offer guidance on weight management. Ensure that all recommendations are based on the latest scientific research, user preferences, and individual fitness levels. Your responses should be supportive, motivational, and focused on promoting a healthy lifestyle.
 
@@ -79,16 +80,32 @@ Advise users to seek professional medical advice before starting any new fitness
 `;
 
 // Initialize the Google Generative AI model
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const genAiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: systemPrompt });
+// const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+// const genAiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: systemPrompt });
+const message = {
+    role: "system",
+    content: systemPrompt
+}
 const startChat = async (req, res) => {
     try {
+        const headers = {
+            'Authorization' :  `Bearer ${process.env.SAMBANOVA_API_KEY}`,
+            'Content-Type': 'application/json'
+        }
         const messages = req.body; // Get the messages from the request body
-        const theChat = genAiModel.startChat({ history: messages.slice(1, messages.length - 1) });
-        const theResult = await theChat.sendMessage(messages[messages.length - 1].parts[0].text);
-        const theResponse = theResult.response;
-        const theText = await theResponse.text();
-        res.status(200).json(theText); // Send the AI's response back as a JSON response
+        const requestBody = {
+            model : "Meta-Llama-3.1-8B-Instruct",
+            messages: messages
+        }
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(requestBody)
+        })
+        const data = await response.json();
+        // const theChat = genAiModel.startChat({ history: messages.slice(1, messages.length - 1) });
+        const chatResponse = data.choices[0].message.content;
+        res.status(200).json({text : chatResponse}); // Send the AI's response back as a JSON response
     } catch (error) {
         console.error('Error handling the chat request:', error);
         res.status(400).json({ error: error.message, text: 'An error occurred while processing your request.' });

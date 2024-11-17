@@ -8,7 +8,7 @@ export default function Home() {
     return savedMessages ? JSON.parse(savedMessages) : [
       {
         role: 'model',
-        parts: [{ text: "Hello! I'm the FitBot. How can I help you today?" }]
+        content: "Hello! I'm the FitBot. How can I help you today?"
       }
     ];
   });
@@ -27,7 +27,7 @@ export default function Home() {
       const response = await fetch('https://fitnesstrack-gk1s.onrender.com/api/chatbot/chat', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify([...messages, { role: "user", parts: [{ text: message }] }])
+        body: JSON.stringify([...messages, { role: "user", content: message}])
       });
 
       let newMessage = await response.json();
@@ -40,15 +40,15 @@ export default function Home() {
 
       setMessages((messages) => [
         ...messages,
-        { role: "user", parts: [{ text: message }] },
-        { role: "model", parts: [{ text: newMessage }] },
+        { role: "user", content: message},
+        { role: "model", content: newMessage},
       ]);
     } catch (e) {
       console.error('Error sending message:', e);
       setMessages((messages) => [
         ...messages,
-        { role: "user", parts: [{ text: message }] },
-        { role: "model", parts: [{ text: `Sorry, I encountered an error: ${e.message}` }] },
+        { role: "user", content : message},
+        { role: "model", content : `Sorry, I encountered an error: ${e.message}`},
       ]);
     }
   };
