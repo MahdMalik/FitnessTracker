@@ -8,8 +8,8 @@
 }
 
 body {
-  background: linear-gradient(to bottom, #bdc0e0, #2e5984);
-  margin: 0;
+  /* background: linear-gradient(to bottom, #bdc0e0, #2e5984); */
+  margin: 10;
   font-family: "Poppins";
 }
 
@@ -36,7 +36,7 @@ header a {
   width: 100%;
   margin: 0 auto;
   padding: 100px;
-  background: #fff6ff;
+  background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -53,15 +53,15 @@ header a {
 /* homepage */
 .home {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  grid-template-columns: 2fr 1fr; /* Adjust column width ratio */
+  gap: 20px; /* Add or adjust the gap */
 }
 
 .workout-details {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
-  padding: 20px;
+  margin-left: 5px; /* Reduced from 20px */
   position: relative;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
@@ -69,6 +69,7 @@ header a {
 .workout-details h4 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
+
   color: var(--primary);
 }
 
@@ -84,7 +85,7 @@ header a {
   right: 20px;
   cursor: pointer;
   background: #f1f1f1;
-  padding: 6px;
+  padding: 0px;
   border-radius: 50%;
   color: #333;
 }
@@ -137,7 +138,7 @@ nav {
 .container nav a {
   position: relative;
   text-decoration: none;
-  padding: 8px 16px;
+  padding: 0px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
@@ -179,7 +180,7 @@ form.signup,
 form.login {
   max-width: 400px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 0px;
   background: #fff;
   border-radius: 4px;
 }
@@ -194,4 +195,22 @@ form.login {
     padding: 12px;
     font-size: 1.2em;
   }
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.grid-item {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 4px;
 }

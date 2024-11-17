@@ -9,6 +9,10 @@ import Navbar from './components/Navbar'
 import FitBot from './Pages/FitBot'; 
 import Home from './Pages/Home'
 import DietFeed from './components/DietFeed'
+import UpperBody from './Pages/UpperBody'
+import LowerBody from './Pages/LowerBody'
+import Cardio from './Pages/Cardio'
+import Custom from './Pages/Custom'
 function App() {
   const { user } = useAuthContext()
 
@@ -32,6 +36,10 @@ function App() {
             />
              <Route path="/chat" element={user ? <FitBot /> : <Navigate to="/login" />} />
              <Route path="/diet" element={user ? <DietFeed /> : <Navigate to="/login" />} />
+             <Route path="/UpperBody" element={user ? <UpperBody /> : <Navigate to="/login" />} />
+             <Route path="/LowerBody" element={user ? <LowerBody /> : <Navigate to="/login" />} />
+             <Route path="/Cardio" element={user ? <Cardio /> : <Navigate to="/login" />} />
+             <Route path="/Custom" element={user ? <Custom /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </BrowserRouter>
